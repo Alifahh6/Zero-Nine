@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Nine - From Zero to Nine</title>
+
+    <!-- Impor Font dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Impor Ikon dari Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- Deklarasi Variabel Global --- */
+        :root {
+            --primary-color: #8B4513; /* Warna utama */
+            --secondary-color: #FDF5E6; /* Warna sekunder */
+            --dark-color: #3C2A21; /* Warna gelap */
+            --white-color: #FFFFFF; /* Warna putih */
+            --accent-color: #DAA520; /* Warna aksen */
+            --font-heading: 'Playfair Display', serif; /* Font untuk judul */
+            --font-body: 'Poppins', sans-serif; /* Font untuk teks utama */
+            --transition-speed: 0.4s; /* Kecepatan transisi */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Mengatur ukuran box agar inklusif padding dan border */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Efek scroll halus */
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--dark-color);
+            background-color: var(--white-color);
+            line-height: 1.7;
+            overflow-x: hidden; /* Menghindari scroll horizontal */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .container {
+            padding: 100px 5%; /* Padding atas-bawah dan samping */
+            max-width: 1200px;
+            margin: 0 auto; /* Pusatkan konten */
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.2rem, 6vw, 3rem); /* Ukuran responsif */
+            margin-bottom: 60px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #777;
+            margin-top: -50px;
+            margin-bottom: 60px;
+        }
+
+        /* --- Animasi --- */
+        .reveal {
+            position: relative;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 1s ease; /* Transisi untuk animasi muncul */
+        }
+
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* --- Animasi untuk Pesan Sukses --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+            max-width: 100%;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* --- Responsif untuk Pesan Sukses --- */
+        @media (max-width: 600px) {
+            .success-message {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* --- Header & Navigation --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Pastikan header di atas konten lain */
+            transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, padding var(--transition-speed) ease;
+            padding: 20px 5%;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- NAV LOGO (fix lint & gradient) --- */
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-decoration: none;
+            background: linear-gradient(90deg, #FFD700, #8B4513);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            transition: transform var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+            position: relative;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.07);
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 12px rgba(218, 165, 32, 0.6), 0 0 25px rgba(139, 69, 19, 0.4);
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #DAA520, #8B4513);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        .nav-logo:hover::after {
+            width: 100%;
+        }
+
+        /* --- Logo saat scroll --- */
+        .main-header.scrolled .nav-logo {
+            background: linear-gradient(90deg, #8B4513, #3C2A21);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-header.scrolled {
+            background-color: var(--white-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 5%;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            list-style-type: none;
+        }
+
+        .nav-link {
+            color: var(--white-color);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+        }
+
+        .nav-link.active {
+            color: var(--white-color);
+            background: linear-gradient(90deg, #8B4513, #D2691E);
+            box-shadow: 0 3px 10px rgba(139, 69, 19, 0.3);
+            font-weight: 600;
+        }
+
+        .main-header.scrolled .nav-link {
+            color: var(--primary-color);
+        }
+
+        .main-header.scrolled .nav-link:hover {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        .main-header.scrolled .nav-link.active {
+            color: var(--white-color);
+            background: linear-gradient(90deg, #C07A39, #8B4513);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all var(--transition-speed) ease-in-out;
+            background-color: var(--white-color);
+        }
+
+        .main-header.scrolled .bar {
+            background-color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x1080/3C2A21/FDF5E6?text=Zero+Nine&font=playfair+display');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white-color);
+            background-color: var(--dark-color);
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--white-color);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform var(--transition-speed) ease, background-color var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-color);
+            transform: scale(1.05);
+        }
+
+        /* --- Why Choose Us Section --- */
+        #kenapa-kami {
+            background-color: var(--secondary-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-item .icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        /* --- Menu Section --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .menu-card {
+            background-color: var(--white-color);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .menu-card img {
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .menu-card-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .menu-card p {
+            flex-grow: 1;
+        }
+
+        .menu-card .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 20px;
+        }
+
+        /* --- Testimonial Section --- */
+        #testimoni {
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            text-align: center;
+        }
+
+        #testimoni .section-title {
+            color: var(--white-color);
+        }
+
+        .testimonial-card {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card .quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .about-text, .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            border-radius: 15px;
+            box-shadow: -20px -20px 0px var(--secondary-color);
+            width: 100%;
+        }
+
+        .about-text h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--dark-color);
+            text-align: justify;
+        }
+
+        /* --- Gallery Section --- */
+        #galeri {
+            background-color: var(--secondary-color);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* --- Order Section --- */
+        #order {
+            background-color: var(--white-color);
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        #order .section-title {
+            color: var(--primary-color);
+        }
+
+        .order-form {
+            max-width: 600px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-form input,
+        .order-form select,
+        .order-form textarea {
+            padding: 10px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            font-family: var(--font-body);
+        }
+
+        .order-form button {
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .order-form button:hover {
+            background-color: var(--dark-color);
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: var(--dark-color);
+            color: var(--secondary-color);
+            padding: 50px 5%;
+            text-align: center;
+        }
+
+        .footer-socials {
+            margin: 20px 0;
+        }
+
+        .footer-socials a {
+            color: var(--secondary-color);
+            margin: 0 15px;
+            font-size: 1.5rem;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(255, 255, 255, 0.98);
+                width: 100%;
+                height: 100vh;
+                transition: left var(--transition-speed) ease;
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-link {
+                color: var(--dark-color);
+                font-size: 1.5rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .order-form {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <a href="#beranda" class="nav-logo">Zero Nine</a> <!-- Logo situs -->
+            <ul class="nav-menu">
+                <li><a href="#beranda" class="nav-link" aria-current="page">Beranda</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#tentang" class="nav-link">Tentang</a></li>
+                <li><a href="#galeri" class="nav-link">Galeri</a></li>
+                <li><a href="#order" class="nav-link">Order</a></li> <!-- Menu Order baru -->
+            </ul>
+            <button class="hamburger" aria-label="Buka menu navigasi" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="beranda" class="hero">
+            <div class="hero-content">
+                <h1>From Zero to Nine</h1>
+                <p>Menghadirkan kehangatan dan cerita dalam setiap tegukan kopi pilihan asli Indonesia</p>
+                <a href="#menu" class="cta-button">Jelajahi Menu Kami</a>
+            </div>
+        </section>
+
+        <section id="kenapa-kami" class="container reveal">
+            <h2 class="section-title">Kenapa Memilih Kami?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-coffee"></i></div>
+                    <h3>Biji Kopi Terbaik</h3>
+                    <p>Biji kopi Arabika lokal pilihan dari petani terbaik Indonesia. Setiap butir kopi kami jaga kualitasnya, agar kamu bisa menikmati rasa asli yang kaya dan istimewa di setiap tegukan</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3>Dibuat Penuh Cinta</h3>
+                    <p>Setiap cangkir disajikan dengan perhatian dan ketulusan. Dari proses meracik hingga penyajian, semuanya dilakukan dengan cinta agar kamu merasakan kehangatan di setiap kopi yang kami buat</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-store"></i></div>
+                    <h3>Suasana Nyaman</h3>
+                    <p>Ruangan kami dirancang agar terasa nyaman untuk bekerja, ngobrol santai, atau sekadar menikmati waktu sendiri dengan ditemani aroma kopi yang menenangkan</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="container reveal">
+            <h2 class="section-title">Menu Andalan Kami</h2>
+            <p class="section-subtitle">Dibuat dari bahan-bahan pilihan untuk menemani harimu</p>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <img src="images/Americano.jpg" alt="Black Zero Point">
+                    <div class="menu-card-content">
+                        <h3>Black Zero Point</h3>
+                        <p>Americano, perpaduan espresso dan air es menyegarkan yang menghadirkan rasa lembut namun berkarakter</p>
+                        <div class="price">Rp 23.000</div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="images/latte.jpg" alt="Kopi Susu">
+                    <div class="menu-card-content">
+                        <h3>Nine Rise</h3>
+                        <p>Perpaduan espresso pekat dengan susu creamy khas Zero Nine</p>
+                        <div class="price">Rp 25.000</div>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="images/gulaaren.jpg" alt="Kopi Susu Gula Aren">
+                    <div class="menu-card-content">
+                        <h3>Second Palm Sweet</h3>
+                        <p>Perpaduan espresso pekat bold dengan susu creamy khas Zero Nine dengan sentuhan Palm Sugar yang manis dan gurih</p>
+                        <div class="price">Rp 28.000</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimoni" class="container reveal">
+            <h2 class="section-title">Dari Owner Zero Nine</h2>
+            <div class="testimonial-card">
+                <p class="quote">"Buat kami, Zero Nine lahir dari mimpi sederhana — Berawal dari ingin menciptakan sebuah tempat di mana setiap orang bisa merasa tenang, diterima, dan pulang dengan hati yang lebih hangat. Setiap senyum dan obrolan dari kalian adalah bahan bakar yang bikin kami terus jalan sampai hari ini."</p>
+                <p class="quote">"Terima kasih sudah jadi bagian dari perjalanan kecil kami. Semoga setiap tegukan kopi dari Zero Nine bisa menjadi teman di hari sibukmu, penghibur di saat lelah, dan pengingat bahwa hal sederhana bisa membuat bahagia."</p>
+                <p class="author">— Owner Zero Nine ☕</p>
+            </div>
+        </section>
+
+        <section id="tentang" class="container reveal">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Berproses dari Nol hingga Sembilan tanpa Kesempurnaan</h2>
+                    <p>ZeroNine lahir dari filosofi <i>from zero to nine</i> yang memiliki arti membangun dari dasar angka "0" hingga "9" yang melambangkan proses tiada henti tanpa angka "10" sebagai kesempurnaan.</p>
+                    <p>ZeroNine lahir dan berproses lebih baik untuk memberikan yang terbaik bagi pelanggan. Dengan memadukan biji kopi lokal terbaik dan teknologi, kami bertumbuh dari satu gerai kecil hingga menjadi bagian dari keseharian jutaan masyarakat Indonesia.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/breewing.jpg" alt="Proses pembuatan kopi">
+                </div>
+            </div>
+        </section>
+
+        <section id="galeri" class="container reveal">
+            <h2 class="section-title">Galeri Kenangan</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/suasanacafe.jpg" alt="Suasana gerai kopi"></div>
+                <div class="gallery-item"><img src="images/kopi.jpg" alt="Detail secangkir kopi"></div>
+                <div class="gallery-item"><img src="images/cappucino.jpg" alt="Latte art"></div>
+                <div class="gallery-item"><img src="images/arabica.jpg" alt="Biji kopi segar"></div>
+            </div>
+        </section>
+
+        <section id="order" class="container reveal">
+            <h2 class="section-title">Order Menu</h2>
+            <p class="section-subtitle">Pesan kopi favoritmu sekarang!</p>
+
+            <form class="order-form" id="orderForm">
+                <input type="text" placeholder="Nama Anda" required>
+                <input type="text" placeholder="Nomor Telepon" required>
+                <select required>
+                    <option value="" disabled selected>Pilih Menu</option>
+                    <option value="black-zero-point">Black Zero Point - Rp 23.000</option>
+                    <option value="nine-rise">Nine Rise - Rp 25.000</option>
+                    <option value="second-palm-sweet">Second Palm Sweet - Rp 28.000</option>
+                </select>
+                <textarea placeholder="Catatan Tambahan (opsional)" rows="4"></textarea>
+                <button type="submit">Kirim Pesanan</button>
+            </form>
+            <div id="successMsg" class="success-message" style="display: none;">✅ Pesanan Anda Berhasil Terkirim!</div>
+        </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <h3>Zero Nine</h3>
+            <p>From Zero to Nine</p>
+            <div class="footer-socials">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>&copy; 2025 Zero Nine Coffee</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.main-header');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+        const reveals = document.querySelectorAll('.reveal');
+        const orderForm = document.querySelector('#orderForm');
+        const successMsg = document.querySelector('#successMsg');
+
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 150;
+                reveal.classList.toggle('active', elementTop < windowHeight - elementVisible);
+            });
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                    link.setAttribute('aria-current', 'page');
+                }
+            });
+        });
+
+        hamburger.addEventListener('click', () => {
+            const isActive = hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isActive);
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target) && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // ✅ Pesan sukses form order
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const nameInput = orderForm.querySelector('input[placeholder="Nama Anda"]');
+            const phoneInput = orderForm.querySelector('input[placeholder="Nomor Telepon"]');
+            const menuSelect = orderForm.querySelector('select');
+
+            if (!nameInput.value.trim()) {
+                alert('Nama harus diisi!');
+                return;
+            }
+            if (!phoneInput.value.trim()) {
+                alert('Nomor Telepon harus diisi!');
+                return;
+            }
+            if (!menuSelect.value) {
+                alert('Pilih menu terlebih dahulu!');
+                return;
+            }
+
+            orderForm.style.display = 'none';
+            successMsg.style.display = 'block';
+
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+                orderForm.style.display = 'flex';
+                orderForm.reset();
+            }, 3000);
+        });
+
+        window.dispatchEvent(new Event('scroll'));
+    });
+    </script>
+</body>
+</html>
